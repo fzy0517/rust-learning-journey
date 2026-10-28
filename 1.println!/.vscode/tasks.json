@@ -1,0 +1,78 @@
+{
+    // 任务系统的版本号，固定写 2.0.0
+    "version": "2.0.0",
+    
+    // 任务列表，可以定义多个命令
+    "tasks": [
+        {
+            // 任务的名字，显示在 Ctrl+Shift+P → "Tasks: Run Task" 的列表里
+            "label": "cargo build",
+            
+            // 在系统终端（shell）里执行命令
+            "type": "shell",
+            
+            // 实际执行的命令
+            "command": "cargo",
+            
+            // 命令的参数，这里就是 "cargo build"
+            "args": ["build"],
+            
+            // 分组信息，告诉 VS Code 这是什么类型的任务
+            "group": {
+                "kind": "build",      // 属于"构建"类任务
+                "isDefault": true     // Ctrl+Shift+B 默认执行这个任务
+            },
+            
+            // 终端的行为配置
+            "presentation": {
+                "echo": true,         // 在终端里显示执行的命令本身（如显示 "cargo build"）
+                "reveal": "always",   // 任务开始时自动弹出终端面板
+                "focus": false,       // 不把光标自动切到终端（保持你在编辑器里打字）
+                "panel": "shared"     // 多个任务共用同一个终端标签页，避免开一堆窗口
+            },
+            
+            // 错误捕获模式。$rustc 能自动识别 Rust 编译器的错误格式，
+            // 把错误显示在左侧"问题"面板里，点击就能跳转到出错代码行
+            "problemMatcher": "$rustc"
+        },
+        {
+            "label": "cargo run",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["run"],          // 编译 + 立即运行
+            "group": "build",         // 也属于构建类，但不设 isDefault
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$rustc"
+        },
+        {
+            "label": "cargo test",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test"],         // 运行所有测试
+            "group": {
+                "kind": "test",       // 属于"测试"类任务
+                "isDefault": true     // 测试类的默认任务
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$rustc"
+        },
+        {
+            "label": "cargo check",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["check"],        // 只检查语法/类型错误，不生成可执行文件（比 build 快）
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$rustc"
+        }
+    ]
+}

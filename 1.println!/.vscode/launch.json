@@ -1,0 +1,62 @@
+{
+    // 调试配置格式的版本号，固定写 0.2.0
+    "version": "0.2.0",
+    
+    // 调试配置列表，可以定义多种调试方式
+    "configurations": [
+        {
+            // 显示在顶部调试下拉框里的名字，你可以随便改
+            "name": "Debug (cargo run)",
+            
+            // 使用 CodeLLDB 插件作为调试器（不是 C++ 的 GDB）
+            "type": "lldb",
+            
+            // "launch" 表示启动一个新程序；
+            // 另一种是 "attach"，表示附加到一个已经在运行的进程（这里用不到）
+            "request": "launch",
+            
+            // CodeLLDB 的 Rust 专用配置段
+            "cargo": {
+                // 调试前先执行的 cargo 命令
+                // "build" 表示：先 cargo build 编译出可执行文件，再启动调试器
+                "args": ["build"],
+                
+                // filter 用来指定编译哪个目标（当项目有多个可执行文件时必须指定）
+                // 现在注释掉了，表示"自动推断唯一的那个可执行文件"
+                // "name": "hello_rust" 是项目名（Cargo.toml 里的 name 字段）
+                // "kind": "bin" 表示这是一个可执行程序（不是库）
+                //"filter": {
+                //    "name": "hello_rust",
+                //    "kind": "bin"
+                //}
+            },
+            
+            // 传给"你的程序本身"的命令行参数（不是传给 cargo 的）
+            // 比如你的程序需要 ./hello_rust --input file.txt，这里就写 ["--input", "file.txt"]
+            "args": [],
+            
+            // 工作目录，${workspaceFolder} 是 VS Code 的变量，表示当前打开的项目根目录
+            "cwd": "${workspaceFolder}",
+            
+            // 程序输出显示在 VS Code 内置终端里（而不是一个弹出的外部窗口）
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Tests",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                // "test --no-run" 表示：编译测试代码，生成测试可执行文件，但不运行它
+                // 然后调试器去启动这个测试文件，这样你就能在测试代码里打断点了
+                "args": ["test", "--no-run"],
+                //"filter": {
+                //    "name": "hello_rust",
+                //    "kind": "bin"
+                //}
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ]
+}
